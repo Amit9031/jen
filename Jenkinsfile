@@ -1,25 +1,28 @@
-pipeline{
-  agent any
-  stages{
-    stage('build'){
-      steps{
-        echo "building the image"
-        sh "docker build -t nodeapp:latest ."
-      }
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Amit9031/jen.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t myapp .'
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                sh '''
+                docker stop myapp || true
+                docker rm myapp || true
+                docker run -d -p 3000:3000 --name myapp myapp
+                '''
+            }
+        }
     }
-    stage("running"){
-      steps{
-        echo "running the continer"
-        sh 
-        ...
-        docker stop nodeapp || true
-        docker rm nodeapp || true
-        docker run -d -p 3000:3000 --name nodeapp nodeapp:latest
-
-
-        ...
-      }
-    }
-  }
-
 }

@@ -1,5 +1,7 @@
-from node:latest
-copy . .
-workdir /app
-run npm install
-cmd ["node","app.js"]
+FROM node:latest
+
+WORKDIR /app
+
+COPY . .
+
+CMD ["node", "app.js"]
